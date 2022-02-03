@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const res = require('express/lib/response');
 const prisma = new PrismaClient();
 
 async function seed() {
@@ -6,6 +7,7 @@ async function seed() {
     const movies = await createMovies();
     const screens = await createScreens();
     await createScreenings(screens, movies);
+    await createTicket();
 
     process.exit(0);
 }
@@ -95,6 +97,48 @@ async function createScreenings(screens, movies) {
             console.log('Screening created', screening);
         }
     }
+}
+
+async function createTicket() {
+    const createdTicket = await prisma.ticket.create({
+        data: {
+            customer: {
+                create: {
+                    name: 'bob',
+                    contact: {
+                        create: {
+                            email: 'bob@boolean.co.uk',
+                            phone: '1234567890'
+                        }
+                    }
+                }
+            },
+            screening: {
+                create: {
+                    screenId: 1,
+                    movieId: 1,
+                    startsAt: new Date(),
+                }
+            },
+            seat: {
+                create: {
+                    number: 1,
+                    screen: {
+                        connect: {
+                            id: 1
+                        }
+                    }
+                }
+            }
+        },
+        include: {
+            customer: true,
+            screening: true,
+            seat: true
+        }
+    })
+    console.log("createdTicket", createdTicket);
+    //res.json({ data: { createdTicket } });
 }
 
 seed()
