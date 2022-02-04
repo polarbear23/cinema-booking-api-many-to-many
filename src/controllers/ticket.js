@@ -15,14 +15,24 @@ const createTicket = async (req, res) => {
                     id: screeningId
                 }
             },
-            seat: {
-                connect: [...seatIds]
+            seats: {
+                create:
+                    [
+                        {
+                            seat: {
+                                connect: {
+                                    id: seatIds.id
+                                }
+                            }
+                        }
+                    ]
             }
-        },
+        }
+        ,
         include: {
             customer: true,
             screening: true,
-            seat: true
+            seats: true
         }
     })
 
@@ -30,4 +40,4 @@ const createTicket = async (req, res) => {
 }
 
 
-module.exports = { createTicket }
+module.exports = { createTicket } 

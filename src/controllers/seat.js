@@ -8,7 +8,7 @@ const getSeatByScreenId = async (req, res) => {
         },
         include: {
             screen: true,
-            ticket: true
+            tickets: true
         }
     })
     res.json({ data: { seats } })

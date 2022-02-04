@@ -120,21 +120,25 @@ async function createTicket() {
                     startsAt: new Date(),
                 }
             },
-            seat: {
-                create: {
-                    number: 1,
-                    screen: {
-                        connect: {
-                            id: 1
+            seats: {
+                create: [{
+                    seat: {
+                        create: {
+                            number: 1,
+                            screen: {
+                                connect: {
+                                    id: 1
+                                }
+                            }
                         }
                     }
-                }
+                }]
             }
         },
         include: {
             customer: true,
             screening: true,
-            seat: true
+            seats: true
         }
     })
     console.log("createdTicket", createdTicket);
